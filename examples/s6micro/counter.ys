@@ -1,0 +1,3 @@
+read_verilog ../shared/counter.v
+synth_xilinx -top counter -family xc6s -ise
+write_edif -pvector bra counter.edif
