@@ -1,6 +1,6 @@
 module counter(
     input wire clk_i,
-    output wire [7:0] leds_o
+    output wire [3:0] leds_o
 );
 
 reg [27:0] cnt;
