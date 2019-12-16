@@ -1,0 +1,7 @@
+setMode -bs
+setCable -port auto
+Identify -inferir
+assignFile -p 1 -file example_par.bit
+Program -p 1
+
+quit
