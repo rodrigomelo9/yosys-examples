@@ -2,7 +2,13 @@
 
 Examples to use Yosys with FPGA boards that I have access to.
 
+> **Disclaimer:** this project is personal and is not directly related to or
+> endorsed by the Yosys project.
+
 ## System prepare
+
+* Clone [Yosys](https://github.com/YosysHQ/yosys), compile and install it
+(you can also use the provided Dockerfile and scripts).
 
 * To run ISE examples:
 ```
@@ -30,6 +36,7 @@ make program
 
 ## License
 
-Initially based on some examples from [Yosys](https://github.com/YosysHQ/yosys), which are distributed under an ISC license.
+Initially based on some examples from [Yosys](https://github.com/YosysHQ/yosys),
+which is distributed under an ISC license.
 
 Yosys-examples is distributed under the same [ISC](LICENSE) license.
