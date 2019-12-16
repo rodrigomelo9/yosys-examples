@@ -11,7 +11,7 @@ counter:
 	bitgen -w example_design.ncd -g StartupClk:JTAGClk
 
 program:
-	impact -batch ../shared/program.impact
+	impact -batch ../../helpers/program.impact
 
 clean:
 	rm -fr _xmsgs xlnx_auto_0_xdb
