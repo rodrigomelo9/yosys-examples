@@ -1,0 +1,3 @@
+read_verilog ../../hdl/counter.v
+synth_xilinx -top counter -family xc7
+write_edif -pvector bra counter.edif
