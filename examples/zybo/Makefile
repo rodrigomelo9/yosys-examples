@@ -1,10 +1,13 @@
 #!/usr/bin/make
 
-FPGA=xc7z010clg400-1
+FPGA     = xc7z010clg400-1
+EXAMPLES = $(notdir $(basename $(wildcard ../../hdl/*.v)))
+OPTS     = -nolog -nojournal -mode batch
 
-OPTS=-nolog -nojournal -mode batch
+all:
+	@echo "Available examples: $(EXAMPLES)"
 
-counter:
+$(EXAMPLES):
 	yosys $@.ys
 	vivado $(OPTS) -source ../../helpers/vivado.tcl -tclargs $@ $(FPGA)
 

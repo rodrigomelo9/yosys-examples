@@ -1,8 +1,12 @@
 #!/usr/bin/make
 
-FPGA=xc6slx9csg324-2
+FPGA     = xc6slx9csg324-2
+EXAMPLES = $(notdir $(basename $(wildcard ../../hdl/*.v)))
 
-counter:
+all:
+	@echo "Available examples: $(EXAMPLES)"
+
+$(EXAMPLES):
 	yosys $@.ys
 	edif2ngd $@.edif
 	ngdbuild $@ -uc $@.ucf -p $(FPGA)

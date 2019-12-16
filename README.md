@@ -26,7 +26,8 @@ export PATH=<VIVADO_ROOT_PATH>/bin:$PATH
 make <EXAMPLE>
 ```
 
-> **NOTE:** valid examples in `hdl/<EXAMPLE>.v`.
+> **NOTE:** you can run `make` to see a list of available examples
+> (stored in `hdl/<EXAMPLE>.v`).
 
 ## How to program
 
