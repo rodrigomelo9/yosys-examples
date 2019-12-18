@@ -1,0 +1,3 @@
+read_verilog ../../hdl/primitives.v
+synth_xilinx -top primitives -family xc6s -ise
+write_edif -pvector bra primitives.edif
