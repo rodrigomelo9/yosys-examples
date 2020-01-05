@@ -17,6 +17,7 @@ RUN apt-get update -qq \
     git \
     iverilog \
     pkg-config \
+    python-pip \
  && apt-get autoclean && apt-get clean && apt-get -y autoremove \
  && update-ca-certificates \
  && rm -rf /var/lib/apt/lists
@@ -30,3 +31,10 @@ RUN git clone --depth 1 https://github.com/YosysHQ/yosys.git \
  && make test
 
 ENV PATH /opt/yosys/bin:$PATH
+
+RUN git clone --depth 1 https://gitlab.com/rodrigomelo9/pyfpga \
+ && cd pyfpga \
+ && pip install .
+
+ENV PATH /opt/Xilinx/ise/ISE/bin/lin64:$PATH
+ENV PATH /opt/Xilinx/vivado/bin:$PATH
