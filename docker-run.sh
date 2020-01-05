@@ -2,13 +2,13 @@
 
 APP=${@:-/bin/bash}
 
-IMAGE=yosys-xilinx
+IMAGE=yosys-pyfpga
 
 DOCKER_BASHRC=/tmp/.docker_${USER}_bashrc
 
 rm -rf ${DOCKER_BASHRC} 2>/dev/null
 cp ${HOME}/.bashrc ${DOCKER_BASHRC} 2>/dev/null
-echo "PS1=\"(docker) \$PS1\"" >> ${DOCKER_BASHRC}
+echo "PS1=\"($IMAGE docker) \$PS1\"" >> ${DOCKER_BASHRC}
 
 docker run \
     -v "$HOME":"$HOME" \
