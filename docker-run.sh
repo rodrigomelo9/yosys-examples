@@ -15,6 +15,7 @@ docker run \
     -v /etc/passwd:/etc/passwd:ro \
     -v /etc/shadow:/etc/shadow:ro \
     -v /etc/group:/etc/group:ro \
+    -v /mnt:/mnt \
     -v /tmp:/tmp \
     -v ${DOCKER_BASHRC}:${HOME}/.bashrc \
     -v /tmp/.X11-unix:/tmp/.X11-unix \

@@ -27,8 +27,7 @@ WORKDIR /opt
 RUN git clone --depth 1 https://github.com/YosysHQ/yosys.git \
  && cd yosys \
  && make \
- && make install \
- && make test
+ && make install
 
 ENV PATH /opt/yosys/bin:$PATH
 
