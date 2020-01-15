@@ -17,10 +17,12 @@ clean-all:
 	rm -fr temp
 
 run-yosys:
-	yosys -Q yosys.tcl
+	python3 implement.py -t yosys
 
 run-ise:
-	$(ISE)/ISE/bin/lin64/xtclsh ise.tcl
+	python3 implement.py -t ise
 
 run-vivado:
-	$(VIVADO)/bin/vivado -nolog -nojournal -mode batch -source vivado.tcl
+	python3 implement.py -t vivado
+
+run_all: run-yosys run-ise run-vivado
