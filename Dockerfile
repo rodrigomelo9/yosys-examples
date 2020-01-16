@@ -35,5 +35,5 @@ RUN git clone --depth 1 https://gitlab.com/rodrigomelo9/pyfpga \
  && cd pyfpga \
  && pip install .
 
-ENV PATH /opt/Xilinx/ise/ISE/bin/lin64:$PATH
 ENV PATH /opt/Xilinx/vivado/bin:$PATH
+ENV PATH /opt/Xilinx/ise/ISE/bin/lin64:$PATH

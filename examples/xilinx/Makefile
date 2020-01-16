@@ -17,12 +17,14 @@ clean-all:
 	rm -fr temp
 
 run-yosys:
-	python3 implement.py -t yosys
+	time python3 implement.py -t yosys
 
 run-ise:
-	python3 implement.py -t ise
+	time python3 implement.py -t ise
 
 run-vivado:
-	python3 implement.py -t vivado
+	time python3 implement.py -t vivado
 
-run_all: run-yosys run-ise run-vivado
+run-xilinx: run-ise run-vivado
+
+run-all: run-xilinx run-yosys
