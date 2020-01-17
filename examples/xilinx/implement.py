@@ -1,4 +1,5 @@
 import argparse
+import os
 from glob import glob
 
 from fpga.project import Project
@@ -10,33 +11,38 @@ parser.add_argument(
     default='ise'
 )
 args = parser.parse_args()
+tool = args.tool
 
-verilogs = glob('temp/ise/**/*.v', recursive=True)
-verilogs.extend(glob('temp/vivado/**/*.v', recursive=True))
-filesqty = len(verilogs)
+files = glob('temp/ise/**/*.v', recursive=True)
+files.extend(glob('temp/vivado/**/*.v', recursive=True))
+filesqty = len(files)
 
 print('* Collected Verilog files: %s' % filesqty)
+print('* Tool to be used: %s' % tool)
 
-fh = open('temp/{}.log'.format(args.tool), 'w')
 fileno = 1
-
-for filename in verilogs:
-    info = '* {} - {} ({}/{})'.format(args.tool, filename, fileno, filesqty)
-    print(info)
-    PRJ = Project(args.tool)
-    dirname = filename.replace('/', '_').replace('.v', '')
-    PRJ.set_outdir('temp/{}'.format(dirname))
+for filename in files:
+    basename = os.path.basename(filename)
+    basename = os.path.splitext(basename)[0]
+    pathname = os.path.dirname(filename)
+    #
+    print('* {} ({}/{})'.format(filename, fileno, filesqty))
+    PRJ = Project(tool)
+    PRJ.set_outdir('build/{}/{}'.format(tool, basename))
+    if basename in ['EvenSymTranspConvFIR', 'OddSymTranspConvFIR']:
+        PRJ.add_files(os.path.join(pathname, '/DelayLine.v'))
+        PRJ.add_files(os.path.join(pathname, '/FilterStage.v'))
     PRJ.add_files(filename)
     PRJ.set_top(filename)
     try:
         output = PRJ.generate(to_task='imp', capture=True)
-        open('temp/{}.txt'.format(fileno), 'w').write(
+        open('build/{}/{}.txt'.format(tool, basename), 'w').write(
             '#### STDOUT:\n'
             + output.stdout + '\n' +
             '#### STDERR:\n'
             + output.stderr
         )
     except Exception as e:
-        fh.write(info + '\n\n')
-        fh.write('{} ({})\n\n'.format(type(e).__name__, e))
+        print('FAILED:\n')
+        print('{} ({})\n\n'.format(type(e).__name__, e))
     fileno += 1
