@@ -25,13 +25,17 @@ for filename in files:
     basename = os.path.basename(filename)
     basename = os.path.splitext(basename)[0]
     pathname = os.path.dirname(filename)
+    # Unsupported with ise:
+    if tool=='ise' and basename in ['finish_supported_1']:
+        print('Avoiding {} (unsupported in {})'.format(filename, tool))
+        break
     #
     print('* {} ({}/{})'.format(filename, fileno, filesqty))
     PRJ = Project(tool)
     PRJ.set_outdir('build/{}/{}'.format(tool, basename))
     if basename in ['EvenSymTranspConvFIR', 'OddSymTranspConvFIR']:
-        PRJ.add_files(os.path.join(pathname, '/DelayLine.v'))
-        PRJ.add_files(os.path.join(pathname, '/FilterStage.v'))
+        PRJ.add_files(os.path.join(pathname, 'DelayLine.v'))
+        PRJ.add_files(os.path.join(pathname, 'FilterStage.v'))
     PRJ.add_files(filename)
     PRJ.set_top(filename)
     try:
