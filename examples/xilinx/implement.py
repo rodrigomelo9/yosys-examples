@@ -17,6 +17,24 @@ files = glob('temp/ise/**/*.v', recursive=True)
 files.extend(glob('temp/vivado/**/*.v', recursive=True))
 filesqty = len(files)
 
+vivado_unsupported = [
+    # [Synth 8-2914] Unsupported RAM template
+    'asymmetric_ram_3',
+    # [Synth 8-2913] Unsupported Dual Port Block-RAM template for RAM_reg
+    'asymmetric_write_first_1',
+    'asymmetric_write_first_2',
+    'asymmetric_write_first_3',
+    'asymmetric_ram_2d',
+    'asymmetric_ram_2c',
+    'asymmetric_ram_4',
+    # [Synth 8-27] primitive not supported
+    'udp_sequential_1',
+    'udp_sequential_2',
+    'udp_combinatorial_1',
+    # unexpected error has occurred (6)
+    'xor_top'
+]
+
 print('* Collected Verilog files: %s' % filesqty)
 print('* Tool to be used: %s' % tool)
 
@@ -25,17 +43,20 @@ for filename in files:
     basename = os.path.basename(filename)
     basename = os.path.splitext(basename)[0]
     pathname = os.path.dirname(filename)
-    # Unsupported with ise:
-    if tool=='ise' and basename in ['finish_supported_1']:
-        print('Avoiding {} (unsupported in {})'.format(filename, tool))
-        break
-    #
     print('* {} ({}/{})'.format(filename, fileno, filesqty))
+    # Unsupported
+    if tool=='vivado' and basename in vivado_unsupported:
+        print('UNSUPPORTED')
+        continue
+    # Ignore (used later)
+    if basename in ['DelayLine', 'FilterStage']:
+        print('IGNORED (instanciated in other components)')
+        continue
     PRJ = Project(tool)
     PRJ.set_outdir('build/{}/{}'.format(tool, basename))
     if basename in ['EvenSymTranspConvFIR', 'OddSymTranspConvFIR']:
-        PRJ.add_files(os.path.join(pathname, 'DelayLine.v'))
-        PRJ.add_files(os.path.join(pathname, 'FilterStage.v'))
+        PRJ.add_files(os.path.join(pathname, '../EvenSymTranspConvFIR_verilog/DelayLine.v'))
+        PRJ.add_files(os.path.join(pathname, '../EvenSymTranspConvFIR_verilog/FilterStage.v'))
     PRJ.add_files(filename)
     PRJ.set_top(filename)
     try:
@@ -47,6 +68,5 @@ for filename in files:
             + output.stderr
         )
     except Exception as e:
-        print('FAILED:\n')
-        print('{} ({})\n\n'.format(type(e).__name__, e))
+        print('FAILED')
     fileno += 1
