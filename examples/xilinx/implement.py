@@ -17,6 +17,15 @@ files = glob('temp/ise/**/*.v', recursive=True)
 files.extend(glob('temp/vivado/**/*.v', recursive=True))
 filesqty = len(files)
 
+unsupported = [
+    # 'assign' is not a supported statement for synthesis
+    'assign_deassign_reject_1',
+    'assign_deassign_reject_2',
+    'assign_deassign_reject_3',
+    # Supposed to work, but fails
+    'assign_deassign_good'
+]
+
 vivado_unsupported = [
     # [Synth 8-2914] Unsupported RAM template
     'asymmetric_ram_3',
@@ -44,13 +53,17 @@ for filename in files:
     basename = os.path.splitext(basename)[0]
     pathname = os.path.dirname(filename)
     print('* {} ({}/{})'.format(filename, fileno, filesqty))
+    fileno += 1
     # Unsupported
+    if basename in unsupported:
+        print('UNSUPPORTED in ISE and Vivado')
+        continue
     if tool=='vivado' and basename in vivado_unsupported:
-        print('UNSUPPORTED')
+        print('UNSUPPORTED in Vivado')
         continue
     # Ignore (used later)
     if basename in ['DelayLine', 'FilterStage']:
-        print('IGNORED (instanciated in other components)')
+        print('IGNORED (used as part of another component)')
         continue
     PRJ = Project(tool)
     PRJ.set_outdir('build/{}/{}'.format(tool, basename))
@@ -69,4 +82,3 @@ for filename in files:
         )
     except Exception as e:
         print('FAILED')
-    fileno += 1
