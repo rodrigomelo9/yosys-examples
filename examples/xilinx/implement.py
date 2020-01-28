@@ -74,11 +74,7 @@ for filename in files:
     PRJ.set_top(filename)
     try:
         output = PRJ.generate(to_task='imp', capture=True)
-        open('build/{}/{}.txt'.format(tool, basename), 'w').write(
-            '#### STDOUT:\n'
-            + output.stdout + '\n' +
-            '#### STDERR:\n'
-            + output.stderr
-        )
+        open('build/{}/{}.txt'.format(tool, basename), 'w').write(output)
     except Exception as e:
         print('FAILED')
+        print(('{} ({})'.format(type(e).__name__, e)))

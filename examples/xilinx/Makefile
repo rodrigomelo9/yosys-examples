@@ -12,7 +12,7 @@ prepare:
 	rm -fr temp/vivado/tristates_3.v
 	# This file is a VHDL file with stranger things
 	rm -fr temp/vivado/procedure_package_1.v
-	# Invalid code (missing generate statement), well solved in bytewrite_writefirst_test2.v
+	# Invalid code (missing generate statement), well solved in bytewrite_writefirst.v
 	rm -fr temp/ise/xstug_examples/HDL_Coding_Techniques/rams/bytewrite_writefirst_test2.v
 	# Duplicated
 	# find -name *.v -type f -printf '%p %f\n' | sort -t ' ' -k 2,2 | uniq -f 1 --all-repeated=separate | cut -d' ' -f1
@@ -37,8 +37,13 @@ prepare:
 clean-all:
 	rm -fr temp build
 
-run-yosys:
-	time python3 implement.py -t yosys
+run-yosys-ise:
+	time python3 implement.py -t yosys-ise
+
+run-yosys-vivado:
+	time python3 implement.py -t yosys-vivado
+
+run-yosys: run-yosys-ise run-yosys-vivado
 
 run-ise:
 	time python3 implement.py -t ise
