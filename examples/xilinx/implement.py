@@ -15,6 +15,7 @@ tool = args.tool
 
 files = glob('temp/ise/**/*.v', recursive=True)
 files.extend(glob('temp/vivado/**/*.v', recursive=True))
+files = ['/home/ram/repos-git/Yosys/yosys-examples/examples/xilinx/temp/ise/xstug_examples/HDL_Coding_Techniques/rams/rams_20c.v']
 filesqty = len(files)
 
 unsupported = [
@@ -44,6 +45,17 @@ vivado_unsupported = [
     'xor_top'
 ]
 
+yosys_unsupported = [
+    # System hang-out
+    'asym_ram_tdp_write_first',
+    # primitive declaration
+    'udp_sequential_1',
+    'udp_sequential_2',
+    'udp_combinatorial_1',
+    # $finish, $display
+    'finish_ignored_1',
+]
+
 print('* Collected Verilog files: %s' % filesqty)
 print('* Tool to be used: %s' % tool)
 
@@ -61,11 +73,16 @@ for filename in files:
     if tool=='vivado' and basename in vivado_unsupported:
         print('UNSUPPORTED in Vivado')
         continue
+    if 'yosys' in tool and basename in yosys_unsupported:
+        print('UNSUPPORTED in Yosys')
+        continue
     # Ignore (used later)
     if basename in ['DelayLine', 'FilterStage']:
         print('IGNORED (used as part of another component)')
         continue
     PRJ = Project(tool)
+    if 'ise' in tool:
+        PRJ.set_part('XC6SLX9-2-CSG324')
     PRJ.set_outdir('build/{}/{}'.format(tool, basename))
     if basename in ['EvenSymTranspConvFIR', 'OddSymTranspConvFIR']:
         PRJ.add_files(os.path.join(pathname, '../EvenSymTranspConvFIR_verilog/DelayLine.v'))

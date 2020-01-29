@@ -37,13 +37,16 @@ prepare:
 clean-all:
 	rm -fr temp build
 
+run-yosys:
+	time python3 implement.py -t yosys
+
 run-yosys-ise:
 	time python3 implement.py -t yosys-ise
 
 run-yosys-vivado:
 	time python3 implement.py -t yosys-vivado
 
-run-yosys: run-yosys-ise run-yosys-vivado
+run-yosys-all: run-yosys-ise run-yosys-vivado
 
 run-ise:
 	time python3 implement.py -t ise
@@ -53,4 +56,4 @@ run-vivado:
 
 run-xilinx: run-ise run-vivado
 
-run-all: run-xilinx run-yosys
+run-all: run-xilinx run-yosys-all
