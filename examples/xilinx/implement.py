@@ -15,7 +15,6 @@ tool = args.tool
 
 files = glob('temp/ise/**/*.v', recursive=True)
 files.extend(glob('temp/vivado/**/*.v', recursive=True))
-files = ['/home/ram/repos-git/Yosys/yosys-examples/examples/xilinx/temp/ise/xstug_examples/HDL_Coding_Techniques/rams/rams_20c.v']
 filesqty = len(files)
 
 unsupported = [
@@ -83,6 +82,8 @@ for filename in files:
     PRJ = Project(tool)
     if 'ise' in tool:
         PRJ.set_part('XC6SLX9-2-CSG324')
+    if 'yosys' in tool:
+        PRJ.add_files('../../hdl/blackboxes.v')
     PRJ.set_outdir('build/{}/{}'.format(tool, basename))
     if basename in ['EvenSymTranspConvFIR', 'OddSymTranspConvFIR']:
         PRJ.add_files(os.path.join(pathname, '../EvenSymTranspConvFIR_verilog/DelayLine.v'))
