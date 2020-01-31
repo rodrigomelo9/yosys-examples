@@ -57,3 +57,9 @@ run-vivado:
 run-xilinx: run-ise run-vivado
 
 run-all: run-xilinx run-yosys-all
+
+errors:
+	@$(foreach DIR,$(wildcard build/*),\
+	echo $(subst build/,,$(DIR));\
+	grep -rn "ERROR:" $(DIR) | grep -v tcl | grep -v ISEWrap > $(subst build/,,$(DIR)).errors;\
+	)
