@@ -34,6 +34,11 @@ prepare:
 	# Moved to avoid name collisions
 	mv temp/vivado/black_box_1.v temp/vivado/black_box_2.v
 
+run-iverilog:
+	@$(foreach FILE, $(shell find temp/ -type f -name *.v), \
+		$(shell iverilog ../../hdl/blackboxes.v $(FILE)) \
+	)
+
 clean-all:
 	rm -fr temp build
 
