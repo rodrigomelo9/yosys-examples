@@ -46,7 +46,7 @@ run-yosys-ise:
 run-yosys-vivado:
 	time python3 implement.py -t yosys-vivado
 
-run-yosys-all: run-yosys-ise run-yosys-vivado
+run-yosys-all: run-yosys run-yosys-ise run-yosys-vivado
 
 run-ise:
 	time python3 implement.py -t ise
